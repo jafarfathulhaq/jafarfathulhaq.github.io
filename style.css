@@ -1,0 +1,514 @@
+/* ===========================================
+   COLOR VARIABLES
+=========================================== */
+
+:root {
+  --bg-page:      #0d1117;
+  --bg-hover:     #161b22;
+  --border:       #30363d;
+  --text-primary: #e6edf3;
+  --text-muted:   #8b949e;
+  --text-faint:   #6e7681;
+  --accent:       #4ecca3;
+}
+
+
+/* ===========================================
+   RESET & BASE
+=========================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* smooth-scroll makes anchor links (#about etc.) animate instead of jump */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* ===========================================
+   TWO-COLUMN LAYOUT
+   Left: sticky sidebar
+   Right: scrollable content
+=========================================== */
+
+.layout {
+  display: flex;                 /* Side-by-side columns */
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 0 48px;
+  gap: 80px;                     /* Space between the two columns */
+}
+
+
+/* ===========================================
+   LEFT SIDEBAR
+=========================================== */
+
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;                /* Never let the sidebar shrink */
+
+  /* sticky: the sidebar scrolls with the page until it hits top: 0,
+     then it sticks there. height: 100vh fills the full screen height. */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+
+  /* flex column so we can push the footer to the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 80px 0;
+
+  /* Faint right border as a visual separator between columns */
+  border-right: 1px solid var(--border);
+  padding-right: 48px;
+}
+
+.sidebar-top h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  /* Subtle color shift on hover — draws attention without being loud */
+  transition: color 0.2s;
+  cursor: default;
+}
+
+.sidebar-top h1:hover {
+  color: var(--accent);
+}
+
+.sidebar-role {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.sidebar-company {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.sidebar-tagline {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+  margin-bottom: 48px;
+}
+
+
+/* ===========================================
+   SIDEBAR NAVIGATION
+   Numbered items with pill highlight on hover/active.
+   Uses a CSS counter to auto-generate 01, 02, 03...
+   without needing to write numbers in the HTML.
+=========================================== */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* counter-reset starts the CSS counter at 0 */
+  counter-reset: nav-counter;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  /* Animate color, background, and left indent together */
+  transition: color 0.2s ease,
+              background-color 0.2s ease,
+              padding-left 0.2s ease;
+}
+
+/* CSS counter — auto-generates 01, 02, 03...
+   counter-increment increases the count for each .nav-link.
+   decimal-leading-zero formats it as 01, 02 etc. */
+.nav-link::before {
+  counter-increment: nav-counter;
+  content: counter(nav-counter, decimal-leading-zero);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding-left: 20px; /* Subtle indent on hover */
+}
+
+.nav-link:hover::before {
+  color: var(--accent);
+}
+
+/* .active is added by JavaScript when that section is in view */
+.nav-link.active {
+  color: var(--accent);
+  background: rgba(78, 204, 163, 0.08); /* Faint teal pill */
+  padding-left: 20px;
+}
+
+.nav-link.active::before {
+  color: var(--accent);
+}
+
+
+/* ===========================================
+   SIDEBAR FOOTER — contact info
+=========================================== */
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.contact-list li {
+  /* Each item slides right slightly on hover */
+  transition: transform 0.2s ease;
+}
+
+.contact-list li:hover {
+  transform: translateX(5px);
+}
+
+.contact-list a {
+  color: var(--accent);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.contact-list a:hover {
+  opacity: 1;
+}
+
+.email-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-family: inherit;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.copy-btn:hover,
+.copy-btn.copied {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+/* ===========================================
+   RIGHT MAIN CONTENT
+=========================================== */
+
+.main-content {
+  flex: 1;
+  padding: 80px 0 160px; /* Extra bottom padding so last section can trigger active nav */
+}
+
+
+/* ===========================================
+   SECTIONS
+=========================================== */
+
+.section {
+  margin-bottom: 80px;
+
+  /* scroll-margin-top = gap between the top of the viewport and the section
+     when it's navigated to via an anchor link (clicking the sidebar nav).
+     Without this, sections snap right to the top edge — "mepet banget". */
+  scroll-margin-top: 80px;
+}
+
+.section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section > p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+
+/* ===========================================
+   JOB CARDS
+=========================================== */
+
+.job {
+  margin-bottom: 36px;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  /* Animate border and background on hover */
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.job:last-child {
+  margin-bottom: 0;
+}
+
+.job:hover {
+  border-color: var(--border);
+  background-color: var(--bg-hover);
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.job-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.job-company {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 3px;
+}
+
+.job-context {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.job-date {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 3px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.job-summary {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.job ul {
+  padding-left: 18px;
+}
+
+.job ul li {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.job ul li::marker {
+  color: var(--accent);
+}
+
+
+/* ===========================================
+   VIEW FULL RESUME LINK
+=========================================== */
+
+.resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.resume-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: rgba(78, 204, 163, 0.06);
+}
+
+
+/* ===========================================
+   ACHIEVEMENTS
+=========================================== */
+
+.achievements-list {
+  padding-left: 18px;
+}
+
+.achievements-list li {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.achievements-list li::marker {
+  color: var(--accent);
+}
+
+.achievements-list strong {
+  color: var(--text-primary);
+}
+
+
+/* ===========================================
+   SKILLS
+=========================================== */
+
+.skills-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 14px 32px;
+}
+
+.skills-list dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+
+.skills-list dd {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+
+/* ===========================================
+   SCROLL-IN ANIMATIONS
+=========================================== */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ===========================================
+   RESPONSIVE — stack on mobile
+=========================================== */
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column; /* Stack sidebar on top of content */
+    padding: 0 24px;
+    gap: 0;
+  }
+
+  .sidebar {
+    position: static;   /* Remove sticky on mobile */
+    height: auto;
+    width: 100%;
+    padding: 48px 0 32px;
+  }
+
+  .sidebar-nav {
+    display: none;      /* Hide nav on mobile — user just scrolls */
+  }
+
+  .main-content {
+    padding: 32px 0 80px;
+  }
+
+  /* Job & education header: single column, date on top */
+  .job-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* order: -1 moves the date to the top visually
+     without changing the HTML order */
+  .job-date {
+    order: -1;
+    white-space: normal; /* Allow date to wrap if needed */
+  }
+
+  /* Skills: drop the two-column grid, go single column */
+  .skills-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .skills-list dt {
+    margin-bottom: -8px; /* Tighten gap between label and its tools */
+  }
+}
