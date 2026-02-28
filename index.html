@@ -47,6 +47,13 @@
 
 <body>
 
+  <!-- Animated background blobs — purely decorative, hidden from screen readers -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
   <!-- Two-column layout: sidebar on left, content on right -->
   <div class="layout">
 
@@ -101,6 +108,32 @@
           Skilled across TV, Digital, CTV/OTT, social, influencer, and analytics, with a strong focus on media
           efficiency &amp; effectiveness and measurable business growth.
         </p>
+
+        <!-- Animated stat counters — numbers count up when scrolled into view -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="10">0</span>
+              <span class="stat-suffix">+</span>
+            </div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="5">0</span>
+              <span class="stat-suffix"></span>
+            </div>
+            <div class="stat-label">Companies</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number-wrap">
+              <span class="stat-number" data-target="7">0</span>
+              <span class="stat-suffix"></span>
+            </div>
+            <div class="stat-label">Markets</div>
+          </div>
+        </div>
+
       </section>
 
       <section id="experience" class="section">
