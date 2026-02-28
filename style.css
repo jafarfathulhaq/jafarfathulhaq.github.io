@@ -619,6 +619,11 @@ a {
     display: none;      /* Hide nav on mobile — user just scrolls */
   }
 
+  .sidebar {
+    border-right: none; /* Remove desktop separator line on mobile */
+    padding-right: 0;
+  }
+
   .main-content {
     padding: 32px 0 80px;
   }
